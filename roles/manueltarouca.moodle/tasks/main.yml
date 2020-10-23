@@ -1,0 +1,4 @@
+---
+        - import_tasks: requirements.yml
+        - import_tasks: web.yml
+        - import_tasks: db.yml

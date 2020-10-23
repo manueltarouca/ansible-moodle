@@ -1,0 +1,28 @@
+- name: "clone moodle {{ moodle_version }}"
+  git:
+          repo: "{{ moodle_repo }}"
+          version: "{{ moodle_version }}"
+          dest: "/opt/moodle"
+          accept_hostkey: yes
+
+- name: start and enable moodle web server
+  service:
+          name: "{{ web_service }}"
+          state: started
+          enabled: yes
+
+- name: copy moodle to web directory
+  copy:
+          src: "/opt/moodle"
+          dest: "/var/www/html/"
+          remote_src: yes
+          mode: 0777
+          force: no
+
+- name: create moodle data folder
+  file:
+          path: "/var/moodledata"
+          mode: 0777
+          owner: www-data
+          state: directory
+          recurse: yes

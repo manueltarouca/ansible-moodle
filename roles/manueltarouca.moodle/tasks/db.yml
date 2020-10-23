@@ -1,0 +1,28 @@
+- name: change db config
+  blockinfile:
+          path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+          block: |
+                  default_storage_engine = innodb
+                  innodb_file_per_table = 1
+
+- name: start and enable db service
+  service:
+          name: "{{ db_service }}"
+
+- name: create db
+  community.mysql.mysql_db:
+          name: "moodle"
+          encoding: "utf8mb4"
+          collation: "utf8mb4_unicode_ci"
+          login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          state: present
+          login_user: root
+
+- name: create moodle db admin user
+  community.mysql.mysql_user:
+          name: "{{ moodle_user }}"
+          state: present
+          login_user: root
+          login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          password: "{{ moodle_password }}"
+          priv: "moodle.*:SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER"
