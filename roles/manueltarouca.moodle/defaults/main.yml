@@ -1,31 +1,31 @@
 ---
 # Packages
 web_packages:
-        - apache2
-        - php
-        - libapache2-mod-php
+  - apache2
+  - php
+  - libapache2-mod-php
 
 db_packages:
-        - mysql-client
-        - mysql-server
+  - mysql-client
+  - mysql-server
 
 extra_packages:
-        - graphviz
-        - aspell
-        - ghostscript
-        - clamav
-        - php7.4-pspell
-        - php7.4-curl
-        - php7.4-gd
-        - php7.4-intl
-        - php7.4-mysql
-        - php7.4-xml
-        - php7.4-xmlrpc
-        - php7.4-ldap
-        - php7.4-zip
-        - php7.4-soap
-        - php7.4-mbstring
-        - git
+  - graphviz
+  - aspell
+  - ghostscript
+  - clamav
+  - php7.4-pspell
+  - php7.4-curl
+  - php7.4-gd
+  - php7.4-intl
+  - php7.4-mysql
+  - php7.4-xml
+  - php7.4-xmlrpc
+  - php7.4-ldap
+  - php7.4-zip
+  - php7.4-soap
+  - php7.4-mbstring
+  - git
 
 # Services
 web_service: apache2

@@ -3,11 +3,11 @@
   hosts: all
 
   tasks:
-          - name: install packages
-            pip:
-                    name:
-                            - PyMySQL
-                    state: latest
+    - name: install packages
+      pip:
+        name:
+          - PyMySQL
+        state: latest
 
-          - name: install collection
-            shell: ansible-galaxy collection install community.mysql
+    - name: install collection
+      shell: ansible-galaxy collection install community.mysql

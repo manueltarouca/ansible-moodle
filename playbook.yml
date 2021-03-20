@@ -2,98 +2,98 @@
 - name: deploy moodle
   hosts: localhost
   collections:
-          - community.mysql.mysql_db
-  
+    - community.mysql.mysql_db
+
   tasks:
-          - name: install lamp stack
-            apt:
-                    name:
-                            - apache2
-                            - mysql-client
-                            - mysql-server
-                            - php
-                            - libapache2-mod-php
-                    state: latest
+    - name: install lamp stack
+      apt:
+        name:
+          - apache2
+          - mysql-client
+          - mysql-server
+          - php
+          - libapache2-mod-php
+        state: latest
 
-          - name: install additional software
-            apt:
-                    name:
-                            - graphviz
-                            - aspell
-                            - ghostscript
-                            - clamav
-                            - php7.4-pspell
-                            - php7.4-curl
-                            - php7.4-gd
-                            - php7.4-intl
-                            - php7.4-mysql
-                            - php7.4-xml
-                            - php7.4-xmlrpc
-                            - php7.4-ldap
-                            - php7.4-zip
-                            - php7.4-soap
-                            - php7.4-mbstring
+    - name: install additional software
+      apt:
+        name:
+          - graphviz
+          - aspell
+          - ghostscript
+          - clamav
+          - php7.4-pspell
+          - php7.4-curl
+          - php7.4-gd
+          - php7.4-intl
+          - php7.4-mysql
+          - php7.4-xml
+          - php7.4-xmlrpc
+          - php7.4-ldap
+          - php7.4-zip
+          - php7.4-soap
+          - php7.4-mbstring
 
-          - name: install git
-            apt:
-                    name: git
-                    state: latest
+    - name: install git
+      apt:
+        name: git
+        state: latest
 
-          - name: download moodle
-            git:
-                    repo: "https://github.com/moodle/moodle.git"
-                    version: "MOODLE_39_STABLE"
-                    dest: "/opt/moodle"
-                    accept_hostkey: yes
+    - name: download moodle
+      git:
+        repo: "https://github.com/moodle/moodle.git"
+        version: "MOODLE_39_STABLE"
+        dest: "/opt/moodle"
+        accept_hostkey: yes
 
-          - name: start webserver service
-            service:
-                    name: apache2
-                    state: started
+    - name: start webserver service
+      service:
+        name: apache2
+        state: started
 
-          - name: copy moodle to web directory
-            copy:
-                    src: "/opt/moodle"
-                    dest: "/var/www/html/"
-                    remote_src: yes
-                    mode: 0777
-                    force: no
+    - name: copy moodle to web directory
+      copy:
+        src: "/opt/moodle"
+        dest: "/var/www/html/"
+        remote_src: yes
+        mode: 0777
+        force: no
 
-          - name: create moodle data folder
-            file:
-                    path: "/var/moodledata"
-                    mode: 0777
-                    owner: www-data
-                    state: directory
-                    recurse: yes
+    - name: create moodle data folder
+      file:
+        path: "/var/moodledata"
+        mode: 0777
+        owner: www-data
+        state: directory
+        recurse: yes
 
-          - name: change mysql config
-            blockinfile:
-                    path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
-                    block: |
-                            default_storage_engine = innodb
-                            innodb_file_per_table = 1
-                            #innodb_file_format = Barracuda
+    - name: change mysql config
+      blockinfile:
+        path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+        block: |
+          default_storage_engine = innodb
+          innodb_file_per_table = 1
+          #innodb_file_format = Barracuda
 
-          - name: start database service
-            service:
-                    name: mysql
-                    state: started
+    - name: start database service
+      service:
+        name: mysql
+        state: started
 
-          - name: create db
-            community.mysql.mysql_db:
-                    name: "moodle"
-                    encoding: "utf8mb4"
-                    collation: "utf8mb4_unicode_ci"
-                    login_unix_socket: "/var/run/mysqld/mysqld.sock"
-                    state: present
-                    login_user: root
+    - name: create db
+      community.mysql.mysql_db:
+        name: "moodle"
+        encoding: "utf8mb4"
+        collation: "utf8mb4_unicode_ci"
+        login_unix_socket: "/var/run/mysqld/mysqld.sock"
+        state: present
+        login_user: root
 
-          - name: create db user
-            community.mysql.mysql_user:
-                    name: "moodledude"
-                    state: present
-                    login_user: root
-                    login_unix_socket: "/var/run/mysqld/mysqld.sock"
-                    password: "passwordformoodledude"
-                    priv: "moodle.*:SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER"
+    - name: create db user
+      community.mysql.mysql_user:
+        name: "moodledude"
+        state: present
+        login_user: root
+        login_unix_socket: "/var/run/mysqld/mysqld.sock"
+        password: "passwordformoodledude"
+        priv: "moodle.*:SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER"
