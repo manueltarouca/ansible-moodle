@@ -1,14 +1,14 @@
 - name: install web packages
-  apt:
+  package:
     name: "{{ web_packages }}"
-    state: latest
+    state: present
 
 - name: install db packages
-  apt:
+  package:
     name: "{{ db_packages }}"
-    state: latest
+    state: present
 
 - name: install other packages
-  apt:
+  package:
     name: "{{ extra_packages }}"
-    state: latest
+    state: present

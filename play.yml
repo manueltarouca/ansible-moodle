@@ -1,6 +1,4 @@
 ---
-- hosts: localhost
-  tasks:
-    - name: deploy moodle
-      include_role:
-        name: manueltarouca.moodle
+- hosts: all
+  roles:
+    - manueltarouca.moodle
